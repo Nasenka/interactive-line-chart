@@ -9,3 +9,18 @@
   display: flex;
   gap: 8px;
 }
+
+.select {
+  border: 1px solid #c7c5d0;
+  border-radius: 4px;
+  padding: 6px 30px 6px 8px;
+  background: #ffffff url("../../assets/images/dropdown-arrow.svg") no-repeat
+    right 4px center;
+  font-size: 12px;
+  line-height: 15px;
+  color: #1b1b23;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

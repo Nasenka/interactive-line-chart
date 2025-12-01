@@ -5,7 +5,7 @@ import styles from "./ControlPanel.module.css";
 interface ControlPanelProps {
   selectedChartType: ChartType;
   selectedInterval: string;
-  selectedVariations: string;
+  selectedVariation: string;
   variations: Variation[];
   onSelectChartType: (type: ChartType) => void;
   onSelectInterval: (interval: string) => void;
@@ -15,7 +15,7 @@ interface ControlPanelProps {
 function ControlPanel({
   selectedChartType,
   selectedInterval,
-  selectedVariations,
+  selectedVariation,
   variations,
   onSelectChartType,
   onSelectInterval,
@@ -25,8 +25,9 @@ function ControlPanel({
     <div className={styles.controlPanel}>
       <div className={styles.left}>
         <select
+          className={styles.select}
           name="selectedVariation"
-          value={selectedVariations}
+          value={selectedVariation}
           onChange={(e) => onSelectVariation(e.target.value)}
         >
           <option value="All">All variations selected</option>
@@ -37,6 +38,7 @@ function ControlPanel({
           ))}
         </select>
         <select
+          className={styles.select}
           name="selectedInterval"
           value={selectedInterval}
           onChange={(e) => onSelectInterval(e.target.value)}
@@ -47,6 +49,7 @@ function ControlPanel({
       </div>
       <div className={styles.right}>
         <select
+          className={styles.select}
           name="selectedChartType"
           value={selectedChartType as string}
           onChange={(e) => onSelectChartType(e.target.value as ChartType)}
