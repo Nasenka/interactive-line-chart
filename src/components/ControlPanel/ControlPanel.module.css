@@ -1,0 +1,11 @@
+.controlPanel {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px 0 10px;
+}
+
+.left,
+.right {
+  display: flex;
+  gap: 8px;
+}
