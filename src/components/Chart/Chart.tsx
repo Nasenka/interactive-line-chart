@@ -21,7 +21,7 @@ interface ChartProps {
   chartData: ChartData[];
   selectedChartType: ChartType;
   selectedInterval: string;
-  selectedVariations: string;
+  selectedVariation: string;
   variations: Variation[];
 }
 
@@ -51,7 +51,7 @@ function Chart({
   chartData,
   selectedChartType,
   selectedInterval,
-  selectedVariations,
+  selectedVariation,
   variations,
 }: ChartProps) {
   const formatDate = (date: string | number | undefined) => {
@@ -61,7 +61,7 @@ function Chart({
 
   const CustomAxisTick = ({ x, y, payload }: AxisTick) => {
     return (
-      <g transform={`translate(${x},${y})`} className={styles.custopmAxisTick}>
+      <g transform={`translate(${x},${y})`}>
         <text
           x={0}
           y={0}
@@ -83,7 +83,6 @@ function Chart({
   }: TooltipContentProps<string | number, string>) => {
     const isVisible = active && payload && payload.length;
     const newPayload = [...payload].sort((a, b) => b.value - a.value);
-    console.log("payload", payload);
 
     return (
       <div
@@ -117,9 +116,9 @@ function Chart({
     <ResponsiveContainer width="100%" aspect={1.618} maxHeight={500}>
       {selectedChartType === "area" ? (
         <AreaChart
-          responsive
           data={chartData}
           margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
+          responsive
         >
           <defs>
             {variations.map((variation, index) => {
@@ -128,7 +127,7 @@ function Chart({
               return (
                 <linearGradient
                   id={`color${dataKey}`}
-                  key={index}
+                  key={dataKey}
                   x1="0"
                   x2="0"
                   y1="0"
@@ -151,8 +150,8 @@ function Chart({
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="name"
+            height={70}
             interval={selectedInterval === "Day" ? 0 : 6}
-            height={100}
             tick={CustomAxisTick}
           />
           <YAxis width="auto" unit="%" />
@@ -160,8 +159,8 @@ function Chart({
           {variations.map((variation, index) => {
             const dataKey = variation.name.replaceAll(" ", "");
             const isHidden = !(
-              selectedVariations === "All" ||
-              selectedVariations === variation.name
+              selectedVariation === "All" ||
+              selectedVariation === variation.name
             );
 
             return (
@@ -170,36 +169,40 @@ function Chart({
                 dataKey={dataKey}
                 fill={`url(#color${dataKey})`}
                 fillOpacity={1}
+                hide={isHidden}
                 isAnimationActive={true}
-                key={index}
+                key={dataKey}
+                name={variation.name}
                 stroke={colors[index]}
                 type="monotone"
-                hide={isHidden}
-                name={variation.name}
               />
             );
           })}
         </AreaChart>
       ) : (
         <LineChart
-          responsive
           data={chartData}
           margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
+          responsive
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="name"
+            height={70}
             interval={selectedInterval === "Day" ? 0 : 6}
-            height={100}
             tick={CustomAxisTick}
           />
-          <YAxis width="auto" unit="%" />
+          <YAxis
+            tick={{ stroke: "#918f9a", strokeWidth: 0 }}
+            unit="%"
+            width="auto"
+          />
           <Tooltip content={CustomTooltip} />
           {variations.map((variation, index) => {
             const dataKey = variation.name.replaceAll(" ", "");
             const isHidden = !(
-              selectedVariations === "All" ||
-              selectedVariations === variation.name
+              selectedVariation === "All" ||
+              selectedVariation === variation.name
             );
 
             return (
@@ -207,14 +210,14 @@ function Chart({
                 connectNulls={true}
                 dataKey={dataKey}
                 dot={false}
+                hide={isHidden}
                 isAnimationActive={true}
-                key={index}
+                key={dataKey}
                 name={variation.name}
                 stroke={colors[index]}
                 strokeWidth={2}
                 type={selectedChartType}
                 unit="%"
-                hide={isHidden}
               />
             );
           })}

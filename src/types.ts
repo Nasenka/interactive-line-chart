@@ -14,10 +14,6 @@ export interface Metrics {
   ]
 }
 
-export interface ChartData {
+export type ChartData = {
   name: string;
-  original: number | null;
-  variationA: number | null;
-  variationB: number | null;
-  variationC: number | null;
-}
+} & Record<string, number | null>;
